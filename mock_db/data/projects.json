@@ -1,0 +1,220 @@
+{
+  "tata-nexon-ev": {
+    "oem": "TATA",
+    "project_name": "Nexon EV Gen 2",
+    "collections": {
+      "details": {
+        "overview": {
+          "id": "overview",
+          "title": "Tata Nexon EV Overview",
+          "oem": "Tata Motors",
+          "platform": "Ziptron EV Architecture",
+          "battery_pack": "40.5 kWh High-Density Lithium-ion",
+          "range_km": 465,
+          "power_ps": 145,
+          "torque_nm": 215,
+          "status": "Production",
+          "wikipedia_url": "https://en.wikipedia.org/wiki/Tata_Nexon#Nexon_EV"
+        }
+      },
+      "git": {
+        "repo_info": {
+          "id": "repo_info",
+          "vcs_type": "git",
+          "repo_url": "https://github.com/tata-motors-ev/nexon-telematics-firmware",
+          "default_branch": "main",
+          "ci_pipeline": "github-actions-embedded",
+          "maintainer": "telematics-team@tatamotors.com",
+          "active_branches": [
+            "main",
+            "feature/bms-v3",
+            "release/v2.4.1"
+          ]
+        }
+      },
+      "manifest": {
+        "build_manifest": {
+          "id": "build_manifest",
+          "firmware_version": "v2.4.1",
+          "target_ecu": "TCU-GEN2-ARM64",
+          "os": "QNX RTOS 7.1",
+          "dependencies": [
+            {
+              "name": "autocore-can-stack",
+              "version": "4.2.0"
+            },
+            {
+              "name": "bms-telemetry-protocol",
+              "version": "1.8.2"
+            },
+            {
+              "name": "ota-client-secure",
+              "version": "3.0.1"
+            }
+          ],
+          "checksum_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  },
+  "skoda-kushaq": {
+    "oem": "SKODA",
+    "project_name": "Kushaq MQB-A0-IN",
+    "collections": {
+      "details": {
+        "overview": {
+          "id": "overview",
+          "title": "Skoda Kushaq Overview",
+          "oem": "\u0160koda Auto Volkswagen India",
+          "platform": "MQB-A0-IN",
+          "engine_options": [
+            "1.0L TSI 3-cylinder",
+            "1.5L TSI EVO 4-cylinder"
+          ],
+          "transmission": [
+            "6-speed manual",
+            "6-speed torque converter",
+            "7-speed DSG"
+          ],
+          "safety_rating": "5 Stars Global NCAP",
+          "status": "Production",
+          "wikipedia_url": "https://en.wikipedia.org/wiki/%C5%A0koda_Kushaq"
+        }
+      },
+      "git": {
+        "repo_info": {
+          "id": "repo_info",
+          "vcs_type": "git",
+          "repo_url": "https://gitlab.skoda-auto.cz/connectivity/infotainment-play",
+          "default_branch": "master",
+          "ci_pipeline": "gitlab-ci-multistage",
+          "maintainer": "infotainment-dev@skoda-auto.co.in",
+          "active_branches": [
+            "master",
+            "develop",
+            "hotfix/wireless-carplay"
+          ]
+        }
+      },
+      "manifest": {
+        "build_manifest": {
+          "id": "build_manifest",
+          "firmware_version": "v3.1.0-IN",
+          "target_ecu": "MIB3-Entry-Display",
+          "os": "Android Automotive OS 12",
+          "dependencies": [
+            {
+              "name": "vw-car-net-core",
+              "version": "2.9.0"
+            },
+            {
+              "name": "skoda-connect-gateway",
+              "version": "1.4.5"
+            },
+            {
+              "name": "audio-dsp-tuning",
+              "version": "0.9.1"
+            }
+          ],
+          "checksum_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+        }
+      }
+    }
+  },
+  "mahindra-xuv700": {
+    "oem": "Mahindra",
+    "project_name": "XUV700 AdrenoX Platform",
+    "collections": {
+      "details": {
+        "overview": {
+          "id": "overview",
+          "title": "Mahindra XUV700 Overview",
+          "oem": "Mahindra & Mahindra",
+          "platform": "Monocoque Global SUV",
+          "engine_options": [
+            "2.0L mStallion Turbo-Petrol",
+            "2.2L mHawk Turbo-Diesel"
+          ],
+          "adas_level": "Level 2 Autonomous Features",
+          "infotainment_system": "AdrenoX Dual 10.25-inch screens",
+          "status": "Production",
+          "wikipedia_url": "https://en.wikipedia.org/wiki/Mahindra_XUV700"
+        }
+      },
+      "git": {
+        "repo_info": {
+          "id": "repo_info",
+          "vcs_type": "git",
+          "repo_url": "https://github.com/mahindra-mobility/adrenox-cockpit-os",
+          "default_branch": "main",
+          "ci_pipeline": "jenkins-automotive-pipeline",
+          "maintainer": "adrenox-sys@mahindra.com",
+          "active_branches": [
+            "main",
+            "feature/adas-radar-fusion",
+            "release/v4.0.0"
+          ]
+        }
+      },
+      "manifest": {
+        "build_manifest": {
+          "id": "build_manifest",
+          "firmware_version": "v4.0.0-PROD",
+          "target_ecu": "ADAS-DOMAIN-CONTROLLER",
+          "os": "Adaptive AUTOSAR 21-11 / Linux Yocto",
+          "dependencies": [
+            {
+              "name": "bosch-radar-driver",
+              "version": "5.1.2"
+            },
+            {
+              "name": "mobileye-eyeq4-vision",
+              "version": "3.8.0"
+            },
+            {
+              "name": "alexa-auto-sdk",
+              "version": "3.1.0"
+            }
+          ],
+          "checksum_sha256": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+        }
+      }
+    }
+  },
+  "hyundai-creta": {
+    "oem": "Hyundai",
+    "project_name": "Hyundai Creta",
+    "collections": {
+      "details": {
+        "overview": {
+          "title": "Hyundai Creta",
+          "oem": "Hyundai",
+          "platform": "K2 Platform",
+          "status": "Active"
+        }
+      },
+      "git": {},
+      "manifest": {}
+    }
+  },
+  "mahindra-thar": {
+    "oem": "Mahindra & Mahindra",
+    "project_name": "Mahindra Thar",
+    "collections": {
+      "details": {
+        "overview": {
+          "oem": "Mahindra & Mahindra",
+          "vehicle_category": "Compact SUV",
+          "summary": "The Mahindra Thar is a compact SUV manufactured by Indian automaker Mahindra & Mahindra. It was introduced on October 4, 2010 and replaced the Mahindra Major.",
+          "predecessor": "Mahindra Major",
+          "status": "In Production",
+          "introduction_date": "2010-10-04",
+          "model": "Mahindra Thar",
+          "wikipedia_url": "https://en.wikipedia.org/wiki/Mahindra_Thar"
+        }
+      },
+      "git": {},
+      "manifest": {}
+    }
+  }
+}
