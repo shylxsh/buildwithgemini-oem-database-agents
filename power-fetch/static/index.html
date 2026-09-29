@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power-Fetch Agent</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+<style>
+  :root {
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --badge-bg: #eff6ff;
+    --badge-text: #1d4ed8;
+    --code-bg: #0f172a;
+    --code-text: #38bdf8;
+    --warning-bg: #fffbeb;
+    --warning-border: #fef08a;
+    --warning-text: #854d0e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+  }
+
+  /* Clickable projects quick bar */
+  #project-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .bar-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+  }
+  .pills-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .project-pill {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+  }
+  .project-pill:hover {
+    background: var(--badge-bg);
+    border-color: var(--accent);
+    color: var(--badge-text);
+  }
+  .pill-oem {
+    font-size: 0.7rem;
+    background: #e2e8f0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+  }
+
+  #log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+  }
+  .msg.user {
+    align-self: flex-end;
+  }
+  .msg.bot {
+    align-self: flex-start;
+  }
+  .bubble {
+    padding: 0.9rem 1.2rem;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+  }
+  .msg.user .bubble {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+  }
+
+  /* Details Card Styling */
+  .details-card {
+    margin-top: 0.75rem;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);
+  }
+  .details-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .details-card-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .endpoint-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-family: monospace;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #bae6fd;
+    word-break: break-all;
+  }
+  .fuzzy-alert {
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    color: var(--warning-text);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .json-viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+  }
+  pre.json-block {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin-top: 0.4rem;
+    max-height: 250px;
+  }
+
+  form {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: #fff;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+  }
+  input:focus {
+    border-color: var(--accent);
+  }
+  button.send-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  button.send-btn:hover {
+    background: var(--accent-dark);
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="material-symbols-outlined">database</span> Power-Fetch Agent</h1>
+  <div class="header-badge">FastAPI Mock DB Connected</div>
+</header>
+
+<div id="project-bar">
+  <div class="bar-label">Available Projects & Shortcuts</div>
+  <div class="pills-container" id="pills-container">
+    <span style="font-size:0.85rem; color:#94a3b8;">Loading available projects...</span>
+  </div>
+</div>
+
+<div id="log"></div>
+
+<form id="form">
+  <input id="input" placeholder="Ask about an OEM project, details, git repo, or manifest…" autocomplete="off" autofocus>
+  <button class="send-btn" type="submit">
+    <span>Send</span>
+    <span class="material-symbols-outlined" style="font-size:18px;">send</span>
+  </button>
+</form>
+
+<script>
+const log = document.getElementById("log");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
+const pillsContainer = document.getElementById("pills-container");
+
+async function loadProjectPills() {
+  try {
+    const res = await fetch("/api/projects");
+    const data = await res.json();
+    pillsContainer.innerHTML = "";
+    if (!data || data.length === 0) {
+      pillsContainer.innerHTML = '<span style="font-size:0.85rem; color:#94a3b8;">No projects found</span>';
+      return;
+    }
+    data.forEach(p => {
+      const pill = document.createElement("button");
+      pill.className = "project-pill";
+      pill.innerHTML = `<span class="pill-oem">${p.oem}</span> <span>${p.project_name}</span>`;
+      pill.onclick = (e) => {
+        e.preventDefault();
+        sendQuery(`Show me the details and overview for ${p.project_name}`);
+      };
+      pillsContainer.appendChild(pill);
+
+      const gitPill = document.createElement("button");
+      gitPill.className = "project-pill";
+      gitPill.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;">code</span> ${p.project_id} Git`;
+      gitPill.onclick = (e) => {
+        e.preventDefault();
+        sendQuery(`Show me the git repository info for ${p.project_id}`);
+      };
+      pillsContainer.appendChild(gitPill);
+    });
+
+    const complexPill = document.createElement("button");
+    complexPill.className = "project-pill";
+    complexPill.style.borderColor = "#f59e0b";
+    complexPill.style.color = "#b45309";
+    complexPill.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;">search</span> Fuzzy Search: Android OS`;
+    complexPill.onclick = (e) => {
+      e.preventDefault();
+      sendQuery(`Which vehicle project uses Android Automotive OS?`);
+    };
+    pillsContainer.appendChild(complexPill);
+
+  } catch (err) {
+    pillsContainer.innerHTML = '<span style="font-size:0.85rem; color:#ef4444;">Failed to load projects</span>';
+  }
+}
+
+function appendMessage(who, text, cardData = null) {
+  const m = document.createElement("div");
+  m.className = "msg " + who;
+
+  const b = document.createElement("div");
+  b.className = "bubble";
+  b.textContent = text;
+  m.appendChild(b);
+
+  if (cardData && cardData.has_details) {
+    const card = document.createElement("div");
+    card.className = "details-card";
+
+    let headerHtml = `
+      <div class="details-card-header">
+        <div class="details-card-title">
+          <span class="material-symbols-outlined">receipt_long</span> Final Details Card
+        </div>
+        ${cardData.endpoint ? `<div class="endpoint-badge">Endpoint: ${cardData.endpoint}</div>` : ''}
+      </div>
+    `;
+
+    let fuzzyHtml = '';
+    if (cardData.is_fuzzy) {
+      fuzzyHtml = `
+        <div class="fuzzy-alert">
+          <span class="material-symbols-outlined" style="font-size:18px;">travel_explore</span>
+          <span><strong>Complex Query Detected:</strong> Fuzzy matching executed across database collections.</span>
+        </div>
+      `;
+    }
+
+    let jsonHtml = '';
+    if (cardData.raw_json) {
+      const jsonStr = JSON.stringify(cardData.raw_json, null, 2);
+      const jsonId = 'json-' + Math.random().toString(36).substr(2, 9);
+      jsonHtml = `
+        <div class="json-viewer-header">
+          <span>Raw JSON Document:</span>
+          <button class="toggle-btn" onclick="toggleJson('${jsonId}')" id="btn-${jsonId}">Collapse</button>
+        </div>
+        <pre class="json-block" id="${jsonId}">${escapeHtml(jsonStr)}</pre>
+      `;
+    }
+
+    card.innerHTML = headerHtml + fuzzyHtml + jsonHtml;
+    m.appendChild(card);
+  }
+
+  log.appendChild(m);
+  log.scrollTop = log.scrollHeight;
+  return m;
+}
+
+window.toggleJson = function(id) {
+  const el = document.getElementById(id);
+  const btn = document.getElementById('btn-' + id);
+  if (!el) return;
+  if (el.style.display === "none") {
+    el.style.display = "block";
+    btn.textContent = "Collapse";
+  } else {
+    el.style.display = "none";
+    btn.textContent = "Expand";
+  }
+};
+
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+async function sendQuery(query) {
+  if (!query) return;
+  appendMessage("user", query);
+  input.value = "";
+
+  const thinkingMsg = appendMessage("bot", "Analyzing request and fetching database endpoints…");
+
+  try {
+    const res = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: query, user_id: "workshop-user" })
+    });
+    const data = await res.json();
+    thinkingMsg.remove();
+
+    const parts = data.parts || [];
+    const text = parts.map(p => p.text || "").join("\n") || "No response received.";
+    appendMessage("bot", text, data.details_card);
+
+  } catch (err) {
+    thinkingMsg.remove();
+    appendMessage("bot", "Error connecting to power-fetch server: " + err.message);
+  }
+}
+
+form.onsubmit = (e) => {
+  e.preventDefault();
+  const q = input.value.trim();
+  if (q) sendQuery(q);
+};
+
+loadProjectPills();
+appendMessage("bot", "Hello! I am the Power-Fetch Agent. You can click any project above or type a query to search details, git repositories, or manifest records.");
+</script>
+</body>
+</html>
